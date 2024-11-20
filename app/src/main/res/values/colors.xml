@@ -1,8 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#FEFEFE</color>
     <color name="bg_black.25">#40000000</color>
     <color name="gray">#5D6C89</color>
+    <color name="firstBg">#383C47</color>
+    <color name="secondBg">#272B34</color>
+    <color name="red">#FF4342</color>
+    <color name="blue">#3472FB</color>
+    <color name="green">#2FFB78</color>
+    <color name="yellow">#FFD700</color>
     <color name="transparent">#00000000</color>
 </resources>

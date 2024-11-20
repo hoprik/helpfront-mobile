@@ -3,6 +3,7 @@ package ru.helpfront.base.functions;
 import android.os.Handler;
 import android.os.Looper;
 import okhttp3.*;
+import org.json.JSONException;
 
 import java.io.IOException;
 
@@ -29,14 +30,20 @@ public class Network {
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                handler.post(() -> callback.onResponse(response));
+            public void onResponse(Call call, Response response){
+                handler.post(() -> {
+                    try {
+                        callback.onResponse(response);
+                    } catch (IOException | JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             }
         });
     }
 
     public interface Callback {
         void onFailure(IOException e);
-        void onResponse(Response response);
+        void onResponse(Response response) throws IOException, JSONException;
     }
 }

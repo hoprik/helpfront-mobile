@@ -1,5 +1,7 @@
 package ru.helpfront.base.pages.entry;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -13,6 +15,7 @@ import ru.helpfront.base.R;
 import ru.helpfront.base.components.ui.Button;
 import ru.helpfront.base.functions.Network;
 import ru.helpfront.base.pages.Page;
+import ru.helpfront.base.pages.ProfilePage;
 
 import java.io.IOException;
 
@@ -49,28 +52,19 @@ public class LogInPage extends Page {
                 }
 
                 @Override
-                public void onResponse(Response response) {
-                    Log.d("network", jsonData);
-                    JSONObject object = null;
-                    try {
-                        object = new JSONObject(response.body().string());
-                    } catch (JSONException | IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                public void onResponse(Response response) throws IOException, JSONException{
+                    JSONObject object = new JSONObject(response.body().string());
                     if (object.has("error")) {
-                        try {
-                            Toast.makeText(activity, object.getString("error"), Toast.LENGTH_LONG).show();
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        }
+                        Toast.makeText(activity, object.getString("error"), Toast.LENGTH_LONG).show();
                     }
                     if (object.has("data")) {
-                        try {
-                            JSONObject object1 = object.getJSONObject("data");
-                            Toast.makeText(activity, object1.getString("userId"), Toast.LENGTH_LONG).show();
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        }
+                        JSONObject object1 = object.getJSONObject("data");
+                        String userID = object1.getString("userId");
+                        SharedPreferences sharedPreferences = activity.getSharedPreferences("helpfrontData", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("userId", userID);
+                        editor.apply();
+                        new ProfilePage(activity);
                     }
                 }
             });

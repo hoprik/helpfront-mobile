@@ -5,10 +5,10 @@ import android.util.Log;
 import android.view.View;
 import androidx.activity.ComponentActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import ru.helpfront.base.Functions;
 import ru.helpfront.base.R;
 import ru.helpfront.base.components.ui.Button;
 import ru.helpfront.base.pages.entry.LogInPage;
+import ru.helpfront.base.pages.entry.SignInPage;
 
 public class EntryPage extends Page{
 
@@ -40,10 +40,10 @@ public class EntryPage extends Page{
             // Определяем, какой макет и кнопку использовать
             if (changeStatus.equals("login")) {
                 oppositeButton = activity.findViewById(R.id.registerChangeButton);
-                Functions.changeLayout(this.activity, R.layout.login, R.id.view3);
+                new LogInPage(this.activity, R.id.view3);
             } else {
                 oppositeButton = activity.findViewById(R.id.loginChangeButton);
-                Functions.changeLayout(this.activity, R.layout.register, R.id.view3);
+                new SignInPage(this.activity, R.id.view3);
             }
 
             if (oppositeButton != null) {

@@ -17,15 +17,15 @@
                 android:background="@color/bg_black.25"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintVertical_bias="0.498" app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintVertical_bias="0.498" app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/constraintLayout">
             <ru.helpfront.base.components.ui.Button
                     android:fontFamily="@font/inter"
                     android:text="Вход"
                     android:textColor="@color/white"
                     app:backgroundColor="@color/bg_black.25"
-                    app:cornerRadius="5dp"
                     android:layout_width="154dp"
-                    android:layout_height="47dp" android:id="@+id/button3"
+                    android:layout_height="47dp" android:id="@+id/loginChangeButton"
                     app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"/>
             <ru.helpfront.base.components.ui.Button
                     android:fontFamily="@font/inter"
@@ -34,7 +34,7 @@
                     app:backgroundColor="#00FFFFFF"
                     app:cornerRadius="5dp"
                     android:layout_width="146dp"
-                    android:layout_height="47dp" android:id="@+id/button4"
+                    android:layout_height="47dp" android:id="@+id/registerChangeButton"
                     app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
                     android:background="#00FFFFFF"/>
             <include
@@ -43,11 +43,16 @@
                     android:layout_height="303dp" android:id="@+id/view3"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
-            <!--            <View-->
-            <!--                    android:layout_width="293dp"-->
-            <!--                    android:layout_height="302dp" android:id="@+id/view3"-->
-            <!--                    app:layout_constraintStart_toStartOf="parent"-->
-            <!--                    app:layout_constraintBottom_toBottomOf="parent"/>-->
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+                android:text="Элетронный журнал"
+                android:textSize="32sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+                android:layout_marginBottom="72dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -34,26 +35,48 @@ public class Button extends AppCompatButton {
 
         // Устанавливаем значения по умолчанию
         int defaultColor = 0xFFFFFFFF; // Белый
-        float defaultRadius = 5f; // Радиус закругления по умолчанию
+        float defaultRadius = 0; // Радиус закругления по умолчанию
+        int defaultPadding = 0; // Радиус закругления по умолчанию
 
         // Получаем атрибуты из XML
         if (attrs != null) {
             TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Button);
             int backgroundColor = a.getColor(R.styleable.Button_backgroundColor, defaultColor);
             float cornerRadius = a.getDimension(R.styleable.Button_cornerRadius, defaultRadius);
+            int padding = a.getInt(R.styleable.Button_padding, defaultPadding);
+            int paddingX = a.getInt(R.styleable.Button_paddingX, padding);
+            int paddingY = a.getInt(R.styleable.Button_paddingY, padding);
+            float cornerRadiusLeft = a.getDimension(R.styleable.Button_cornerRadiusLeft, cornerRadius);
+            float cornerRadiusTop = a.getDimension(R.styleable.Button_cornerRadiusTop, cornerRadius);
+            float cornerRadiusRight = a.getDimension(R.styleable.Button_cornerRadiusRight, cornerRadius);
+            float cornerRadiusBottom = a.getDimension(R.styleable.Button_cornerRadiusBottom, cornerRadius);
             a.recycle();
 
             // Устанавливаем цвет и радиус
             backgroundDrawable.setColor(backgroundColor);
-            backgroundDrawable.setCornerRadius(cornerRadius);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                backgroundDrawable.setPadding(paddingX, paddingY, paddingX, paddingY);
+            }
+            backgroundDrawable.setCornerRadii(new float[]{
+                    cornerRadiusLeft, cornerRadiusTop,
+                    cornerRadiusRight, cornerRadiusTop,
+                    cornerRadiusRight, cornerRadiusBottom,
+                    cornerRadiusLeft, cornerRadiusBottom
+            });
         } else {
             // Устанавливаем значения по умолчанию
             backgroundDrawable.setColor(defaultColor);
             backgroundDrawable.setCornerRadius(defaultRadius);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                backgroundDrawable.setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding);
+            }
+            backgroundDrawable.setCornerRadii(new float[]{
+                    defaultRadius, defaultRadius,
+                    defaultRadius, defaultRadius,
+                    defaultRadius, defaultRadius,
+                    defaultRadius, defaultRadius
+            });
         }
-
-        setPadding(20,10,20,10);
-
         setTextSize(16);
 
         // Устанавливаем фон кнопки

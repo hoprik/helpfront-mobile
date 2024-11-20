@@ -37,7 +37,7 @@
             app:layout_constraintStart_toStartOf="parent"
     />
     <ru.helpfront.base.components.ui.Button
-            android:text="Войти"
+            android:text="Зарегистироватся"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/button"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" app:layout_constraintEnd_toEndOf="parent"

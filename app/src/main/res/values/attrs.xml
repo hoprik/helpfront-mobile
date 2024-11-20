@@ -3,5 +3,13 @@
     <declare-styleable name="Button">
         <attr name="backgroundColor" format="color" />
         <attr name="cornerRadius" format="dimension" />
+        <attr name="padding" format="integer" />
+        <attr name="paddingX" format="integer" />
+        <attr name="paddingY" format="integer" />
+        <attr name="cornerRadiusLeft" format="dimension" />
+        <attr name="cornerRadiusTop" format="dimension" />
+        <attr name="cornerRadiusRight" format="dimension" />
+        <attr name="cornerRadiusBottom" format="dimension" />
+
     </declare-styleable>
 </resources>

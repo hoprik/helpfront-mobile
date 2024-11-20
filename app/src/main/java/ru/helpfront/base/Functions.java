@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import androidx.activity.ComponentActivity;
 
 public class Functions {
-    private void changeLayout(ComponentActivity activity, int layoutId, int renderId) {
+    public static void changeLayout(ComponentActivity activity, int layoutId, int renderId) {
         ViewGroup includeLayout = activity.findViewById(renderId);
         includeLayout.setBackgroundResource(R.color.transparent);
         if (includeLayout.getChildCount() > 0) {

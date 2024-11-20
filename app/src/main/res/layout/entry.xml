@@ -13,7 +13,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:fontFamily="@font/inter"
                 android:layout_width="300dp"
-                android:layout_height="350dp"
+                android:layout_height="368dp"
                 android:background="@color/bg_black.25"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
@@ -40,9 +40,11 @@
             <include
                     layout="@layout/login"
                     android:layout_width="300dp"
-                    android:layout_height="303dp" android:id="@+id/view3"
+                    android:layout_height="321dp" android:id="@+id/view3"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <TextView
                 android:text="Элетронный журнал"

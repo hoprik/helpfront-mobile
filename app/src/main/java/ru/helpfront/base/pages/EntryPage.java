@@ -2,14 +2,13 @@ package ru.helpfront.base.pages;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewStub;
 import androidx.activity.ComponentActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import ru.helpfront.base.Functions;
 import ru.helpfront.base.R;
 import ru.helpfront.base.components.ui.Button;
+import ru.helpfront.base.pages.entry.LogInPage;
 
 public class EntryPage extends Page{
 
@@ -21,6 +20,7 @@ public class EntryPage extends Page{
     public void render() {
         this.activity.setContentView(R.layout.entry);
 
+        new LogInPage(this.activity, R.id.view3);
         ConstraintLayout backgroundAnimation = activity.findViewById(R.id.bgLayout);
         backgroundAnimation.setBackgroundResource(R.drawable.background_animation);
         AnimationDrawable backgroundAnimationDrawable = (AnimationDrawable) backgroundAnimation.getBackground();
@@ -39,14 +39,13 @@ public class EntryPage extends Page{
 
             // Определяем, какой макет и кнопку использовать
             if (changeStatus.equals("login")) {
-                oppositeButton = activity.findViewById(R.id.registerChangeButton); // Используем activity для поиска
-                changeLayout(R.layout.login);
+                oppositeButton = activity.findViewById(R.id.registerChangeButton);
+                Functions.changeLayout(this.activity, R.layout.login, R.id.view3);
             } else {
-                oppositeButton = activity.findViewById(R.id.loginChangeButton); // Используем activity для поиска
-                changeLayout(R.layout.register);
+                oppositeButton = activity.findViewById(R.id.loginChangeButton);
+                Functions.changeLayout(this.activity, R.layout.register, R.id.view3);
             }
 
-            // Проверяем, что oppositeButton не равен null
             if (oppositeButton != null) {
                 oppositeButton.setBackgroundResource(R.color.transparent);
             } else {
@@ -56,18 +55,5 @@ public class EntryPage extends Page{
             // Устанавливаем фон для текущего view
             view.setBackgroundResource(R.color.bg_black_25);
         };
-    }
-
-    private void changeLayout(int layoutId) {
-        ViewGroup includeLayout = activity.findViewById(R.id.view3);
-        includeLayout.setBackgroundResource(R.color.transparent);
-        if (includeLayout.getChildCount() > 0) {
-            includeLayout.removeAllViews();
-        }
-
-        LayoutInflater inflater = LayoutInflater.from(activity);
-        View newLayout = inflater.inflate(layoutId, includeLayout, false);
-
-        includeLayout.addView(newLayout);
     }
 }

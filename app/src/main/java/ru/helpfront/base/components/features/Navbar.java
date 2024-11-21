@@ -1,29 +1,22 @@
-package ru.helpfront.base.features;
+package ru.helpfront.base.components.features;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.*;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import ru.helpfront.base.R;
-import ru.helpfront.base.functions.Functions;
 import ru.helpfront.base.pages.EntryPage;
 import ru.helpfront.base.pages.profile.Home;
 import ru.helpfront.base.pages.profile.School;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static ru.helpfront.base.MainActivity.activity;
 
 public class Navbar extends LinearLayout {

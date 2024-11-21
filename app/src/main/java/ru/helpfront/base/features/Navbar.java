@@ -2,17 +2,32 @@ package ru.helpfront.base.features;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import ru.helpfront.base.R;
+import ru.helpfront.base.functions.Functions;
+import ru.helpfront.base.pages.EntryPage;
+import ru.helpfront.base.pages.profile.Home;
+import ru.helpfront.base.pages.profile.School;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static ru.helpfront.base.MainActivity.activity;
 
 public class Navbar extends LinearLayout {
-    private TextView textView;
-    private Button button;
+    Map<String, ImageView> buttons = new HashMap<>();
 
     public Navbar(Context context) {
         super(context);
@@ -39,26 +54,51 @@ public class Navbar extends LinearLayout {
         this.setOrientation(HORIZONTAL);
         this.setPadding(16, 16, 16, 16);
 
-        // Создание и настройка TextView
-        textView = new TextView(context);
-        textView.setText("Здесь будет текст");
-        textView.setTextSize(16);
-        textView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
-        // Создание и настройка Button
-        button = new Button(context);
-        button.setText("Нажми меня");
-        button.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
-        // Установка обработчика нажатия на кнопку
-        button.setOnClickListener(v -> textView.setText("Кнопка нажата!"));
-
         // Добавление элементов в LinearLayout
-        this.addView(textView);
-        this.addView(button);
+        this.addView(addNewButton(context, R.drawable.home, R.layout.home, "home"));
+        this.addView(addNewButton(context, R.drawable.school,  R.layout.school, "school"));
+        this.addView(addNewButton(context, R.drawable.exit,  R.layout.entry, "exit"));
+
+        (buttons.get("home")).setColorFilter(ContextCompat.getColor(activity, R.color.green), PorterDuff.Mode.SRC_IN);
     }
 
-    public void setText(String text) {
-        textView.setText(text);
+    private View addNewButton(Context context, int imageId, int layoutChange, String name){
+        ImageView button = new ImageView(context);
+        button.setImageResource(imageId); // Используйте ваш VectorDrawable
+        button.setScaleType(ImageView.ScaleType.FIT_CENTER); // Сохраняет пропорции
+
+        // Установка параметров для ImageView
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                100,
+                100
+        );
+        params.setMargins(0,0, getWidth(),0);
+        params.gravity = Gravity.CENTER; // Центрирование изображения
+        button.setLayoutParams(params);
+        button.setOnClickListener(layoutChange(layoutChange));
+        buttons.put(name, button);
+        return button;
+    }
+
+    private View.OnClickListener layoutChange(int layoutChange){
+        return v -> {
+            buttons.forEach((s, imageView) -> {
+                imageView.setColorFilter(ContextCompat.getColor(activity, R.color.white), PorterDuff.Mode.SRC_IN);
+            });
+            ((ImageView)v).setColorFilter(ContextCompat.getColor(activity, R.color.green), PorterDuff.Mode.SRC_IN);
+            if (R.layout.home == layoutChange){
+                new Home(activity, R.id.view3);
+            }
+            if (R.layout.school == layoutChange){
+                new School(activity, R.id.view3);
+            }
+            if (R.layout.entry == layoutChange){
+                SharedPreferences sharedPreferences = activity.getSharedPreferences("helpfrontData", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("userId", "");
+                editor.apply();
+                new EntryPage(activity);
+            }
+        };
     }
 }

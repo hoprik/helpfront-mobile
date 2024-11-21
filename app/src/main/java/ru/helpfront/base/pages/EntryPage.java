@@ -9,6 +9,7 @@ import ru.helpfront.base.R;
 import ru.helpfront.base.components.ui.Button;
 import ru.helpfront.base.pages.entry.LogInPage;
 import ru.helpfront.base.pages.entry.SignInPage;
+import ru.helpfront.base.pages.profile.Home;
 
 public class EntryPage extends Page{
 

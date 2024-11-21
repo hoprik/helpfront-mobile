@@ -85,9 +85,4 @@ public class Button extends AppCompatButton {
         setGravity(Gravity.CENTER);
     }
 
-    // Метод для изменения цвета фона
-    public void setCustomBackgroundColor(int color) {
-        backgroundDrawable.setColor(color);
-    }
-
 }

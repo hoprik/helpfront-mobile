@@ -76,6 +76,7 @@ public class LogInPage extends Page {
                                 JSONObject resData = new JSONObject(response.body().string());
                                 JSONObject data = resData.getJSONObject("data");
                                 JSONObject user = data.getJSONObject("user");
+                                DataBank.add("userID", userID, true);
                                 DataBank.add("email", user.getString("email"), true);
                                 DataBank.add("info", user.getJSONObject("info"), true);
                                 DataBank.add("login", user.getString("login"), true);

@@ -46,4 +46,8 @@ public class DataBank {
         }
         return (Boolean) value;
     }
+
+    public static Object get(String key){
+        return map.get(key);
+    }
 }

@@ -17,11 +17,12 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-public class TeachersPanel extends LinearLayout{
+public class TeachersPanel extends LinearLayout {
     public TeachersPanel(Context context) {
         super(context);
         init(context);
@@ -40,52 +41,38 @@ public class TeachersPanel extends LinearLayout{
     private void init(Context context) {
         this.setOrientation(VERTICAL);
         this.setPadding(16, 16, 16, 16);
-        getTeachers().thenAccept(jsonObjects -> {
-            jsonObjects.forEach(jsonObject -> {
-                try {
-                    String url = "";
-                    JSONObject info = jsonObject.getJSONObject("info");
-                    if (jsonObject.has("personalization")){
-                        JSONObject personalization = jsonObject.getJSONObject("personalization");
-                        url = "https://www.helpfront.ru"+personalization.getString("avatar").split("www")[1];
-                    }
-                    this.addView(new UserCart(context, String.format("%s %s", info.getString("name"), info.getString("surname")), "Я тут учитель", url));
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
+        getTeachers().forEach(jsonObject -> {
+            try {
+                String url = "";
+                JSONObject info = jsonObject.getJSONObject("info");
+                if (jsonObject.has("personalization")) {
+                    JSONObject personalization = jsonObject.getJSONObject("personalization");
+                    url = "https://www.helpfront.ru" + personalization.getString("avatar").split("www")[1];
                 }
-            });
+                this.addView(new UserCart(context, String.format("%s %s", info.getString("name"), info.getString("surname")), "Я тут учитель", url));
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
         });
-
     }
 
-    public CompletableFuture<List<JSONObject>> getTeachers() {
-        CompletableFuture<List<JSONObject>> future = new CompletableFuture<>();
 
-        Network.sendPOST("api/user/getList", "{}", Functions.getCookie(), new Network.Callback() {
-            @Override
-            public void onFailure(IOException e) {
-            }
+    private List<JSONObject> getTeachers() {
+        Map<String, JSONObject> users = (Map<String, JSONObject>) DataBank.get("users");
+        List<JSONObject> teachers = new ArrayList<>();
 
-            @Override
-            public void onResponse(Response response) throws IOException, JSONException {
-                List<JSONObject> teachers = new ArrayList<>();
-                JSONObject object = new JSONObject(response.body().string());
-                if (!object.has("data")) {
-                    return;
+        users.forEach((s, jsonObject) -> {
+            try {
+                // Проверяем, является ли пользователь учителем
+                String role = jsonObject.getString("role");
+                if ("teacher".equals(role)) { // Замените "teacher" на нужное значение роли
+                    teachers.add(jsonObject);
                 }
-                JSONArray array = object.getJSONArray("data");
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject user = array.getJSONObject(i);
-                    String role = user.getString("role");
-                    if (role.equals("teacher")) {
-                        Log.d("users", user.toString());
-                        teachers.add(user);
-                    }
-                }
-                future.complete(teachers);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
             }
         });
 
-        return future;
+        return teachers;
     }
 }

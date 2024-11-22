@@ -1,6 +1,7 @@
 package ru.helpfront.base.components.features.MySchool;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -11,17 +12,19 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import ru.helpfront.base.R;
+import ru.helpfront.base.functions.DataBank;
 import ru.helpfront.base.functions.Functions;
 import ru.helpfront.base.functions.Network;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class GroupsPanel extends LinearLayout{
@@ -43,41 +46,49 @@ public class GroupsPanel extends LinearLayout{
     private void init(Context context) {
         this.setOrientation(VERTICAL);
         this.setPadding(16, 16, 16, 16);
-        this.addView(renderGroup(context));
-        this.addView(renderGroup(context));
-        this.addView(renderGroup(context));
-        this.addView(renderGroup(context));
-
-    }
-
-    private CompletableFuture<List<JSONObject>> getGroups() {
-        CompletableFuture<List<JSONObject>> future = new CompletableFuture<>();
-
-        Network.sendPOST("api/group/getList", "{}", Functions.getCookie(), new Network.Callback() {
-            @Override
-            public void onFailure(IOException e) {
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException, JSONException {
-                List<JSONObject> groups = new ArrayList<>();
-                JSONObject object = new JSONObject(response.body().string());
-                if (!object.has("data")) {
-                    return;
+        getGroups().forEach(jsonObject -> {
+            try {
+                String avatar = jsonObject.getString("avatar");
+                String status = jsonObject.getString("status");
+                String name = jsonObject.getString("name");
+                int number = jsonObject.getInt("number");
+                int money = jsonObject.getInt("money");
+                if (!avatar.isEmpty()){
+                    avatar = "https://www.helpfront.ru" + avatar.split("www")[1];
                 }
-                JSONArray array = object.getJSONArray("data");
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject group = array.getJSONObject(i);
-                    groups.add(group);
+                if (status.isEmpty()){
+                    status = "Не указан";
                 }
-                future.complete(groups);
+                String fullName = String.format("%s %s", name, number);
+                this.addView(renderGroup(context, fullName, status, avatar, money));
+
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
             }
         });
 
-        return future;
     }
 
-    private ConstraintLayout renderGroup(Context context){
+    private int getRandomColor(){
+        Random rand = new Random();
+        int n = rand.nextInt(100);
+        n+=1;
+        if (n < 26){
+            return R.color.red;
+        }
+        if (n > 26 && n < 51){
+            return R.color.green;
+        }
+        if (n > 51 && n < 76){
+            return R.color.yellow;
+        }
+        if (n > 76 && n < 100){
+            return R.color.blue;
+        }
+        return R.color.red;
+    }
+
+    private ConstraintLayout renderGroup(Context context, String name, String slogan, String avatar, int money){
         ConstraintLayout constraintLayout = new ConstraintLayout(context);
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.MATCH_PARENT,
@@ -91,16 +102,23 @@ public class GroupsPanel extends LinearLayout{
         ImageView imageView = new ImageView(context);
         imageView.setId(View.generateViewId());
         imageView.setLayoutParams(new ConstraintLayout.LayoutParams(Functions.dpToPx(90, context), Functions.dpToPx(90, context)));
-        imageView.setImageResource(R.drawable.ai);
         ConstraintLayout.LayoutParams paramsImageView = (ConstraintLayout.LayoutParams) imageView.getLayoutParams();
         paramsImageView.setMargins(Functions.dpToPx(8, context), Functions.dpToPx(8, context), 0, 0);
         imageView.setLayoutParams(paramsImageView);
+        int color = getResources().getColor(getRandomColor());
+        Glide.with(this)
+                .load(avatar)
+                .transform(new RoundedCorners(100))
+                .placeholder(new ColorDrawable(color))
+                .error(new ColorDrawable(color))
+                .override(90, 90)
+                .into(imageView);
         constraintLayout.addView(imageView);
 
         // Создаем TextView для имени группы
         TextView groupName = new TextView(context);
         groupName.setId(View.generateViewId());
-        groupName.setText("Profi 1");
+        groupName.setText(name);
         groupName.setTextSize(26);
         groupName.setTextColor(ContextCompat.getColor(context, R.color.white));
         groupName.setLayoutParams(new ConstraintLayout.LayoutParams(
@@ -111,7 +129,7 @@ public class GroupsPanel extends LinearLayout{
         // Создаем TextView для слогана
         TextView groupSlogan = new TextView(context);
         groupSlogan.setId(View.generateViewId());
-        groupSlogan.setText("Слоган: ");
+        groupSlogan.setText("Слоган: "+slogan);
         groupSlogan.setTextSize(15);
         groupSlogan.setTextColor(ContextCompat.getColor(context, R.color.white));
         groupSlogan.setLayoutParams(new ConstraintLayout.LayoutParams(
@@ -122,7 +140,7 @@ public class GroupsPanel extends LinearLayout{
         // Создаем TextView для денег
         TextView groupMoney = new TextView(context);
         groupMoney.setId(View.generateViewId());
-        groupMoney.setText("250");
+        groupMoney.setText(String.valueOf(money));
         groupMoney.setTextSize(15);
         groupMoney.setTextColor(ContextCompat.getColor(context, R.color.white));
         groupMoney.setLayoutParams(new ConstraintLayout.LayoutParams(
@@ -183,7 +201,7 @@ public class GroupsPanel extends LinearLayout{
         constraintSet.connect(groupSlogan.getId(), ConstraintSet.START, imageView.getId(), ConstraintSet.END, Functions.dpToPx(12, context));
 
         constraintSet.connect(groupMoney.getId(), ConstraintSet.TOP, groupSlogan.getId(), ConstraintSet.BOTTOM, Functions.dpToPx(8, context));
-        constraintSet.connect(groupMoney.getId(), ConstraintSet.START, imageView2.getId(), ConstraintSet.END, Functions.dpToPx(8, context));
+        constraintSet.connect(groupMoney.getId(), ConstraintSet.START, imageView2.getId(), ConstraintSet.END, Functions.dpToPx(4, context));
 
         constraintSet.connect(imageView2.getId(), ConstraintSet.TOP, groupSlogan.getId(), ConstraintSet.BOTTOM, Functions.dpToPx(8, context));
         constraintSet.connect(imageView2.getId(), ConstraintSet.START, imageView.getId(), ConstraintSet.END, Functions.dpToPx(12, context));
@@ -199,5 +217,10 @@ public class GroupsPanel extends LinearLayout{
 
         // Устанавливаем созданный ConstraintLayout как содержимое активности
         return constraintLayout;
+    }
+
+    private Collection<JSONObject> getGroups() {
+        Map<String, JSONObject> users = (Map<String, JSONObject>) DataBank.get("groups");
+        return users.values();
     }
 }

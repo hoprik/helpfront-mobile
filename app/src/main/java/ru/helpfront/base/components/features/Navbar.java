@@ -10,6 +10,7 @@ import android.widget.*;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import ru.helpfront.base.R;
+import ru.helpfront.base.functions.Functions;
 import ru.helpfront.base.pages.EntryPage;
 import ru.helpfront.base.pages.profile.Home;
 import ru.helpfront.base.pages.profile.School;
@@ -75,6 +76,7 @@ public class Navbar extends LinearLayout {
 
     private View.OnClickListener layoutChange(int layoutChange){
         return v -> {
+            Functions.changeLayout(activity, R.layout.loading, R.id.view3);
             buttons.forEach((s, imageView) -> {
                 imageView.setColorFilter(ContextCompat.getColor(activity, R.color.white), PorterDuff.Mode.SRC_IN);
             });

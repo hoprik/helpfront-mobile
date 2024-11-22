@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
                                                    android:layout_width="match_parent"
+                                                   android:background="@color/firstBg"
                                                    android:layout_height="match_parent">
 
+    <TextView
+            android:text="Учителя"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/teachers"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="16dp"
+            android:textSize="24sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="16dp"/>
+    <ru.helpfront.base.components.features.MySchool.TeachersPanel android:layout_width="match_parent"
+                                                                  android:layout_height="wrap_content"
+                                                                  app:layout_constraintStart_toStartOf="parent"
+                                                                  app:layout_constraintEnd_toEndOf="parent"
+                                                                  android:layout_marginTop="8dp"
+                                                                  app:layout_constraintHorizontal_bias="0.0"
+                                                                  app:layout_constraintTop_toBottomOf="@+id/teachers"
+                                                                  android:id="@+id/teachersPanel">
+    </ru.helpfront.base.components.features.MySchool.TeachersPanel>
+    <TextView
+            android:text="Классы"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/groups"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            android:textSize="24sp"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/teachersPanel" android:layout_marginTop="8dp"/>
+    <ru.helpfront.base.components.features.MySchool.GroupsPanel android:layout_width="match_parent"
+                                                                  android:layout_height="wrap_content"
+                                                                  app:layout_constraintStart_toStartOf="parent"
+                                                                  app:layout_constraintEnd_toEndOf="parent"
+                                                                  android:layout_marginTop="8dp"
+                                                                  app:layout_constraintHorizontal_bias="0.0"
+                                                                  app:layout_constraintTop_toBottomOf="@+id/groups"
+                                                                  android:id="@+id/groupsPanel">
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:background="@color/secondBg"
+
+
+
+        >
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ru.helpfront.base.components.features.MySchool.GroupsPanel>
 </androidx.constraintlayout.widget.ConstraintLayout>

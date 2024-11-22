@@ -1,12 +1,14 @@
 package ru.helpfront.base.functions;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.activity.ComponentActivity;
 import okhttp3.Response;
 import ru.helpfront.base.R;
+import ru.helpfront.base.components.features.MySchool.TeachersPanel;
 
 public class Functions {
     public static void changeLayout(ComponentActivity activity, int layoutId, int renderId) {
@@ -20,5 +22,14 @@ public class Functions {
         View newLayout = inflater.inflate(layoutId, includeLayout, false);
 
         includeLayout.addView(newLayout);
+    }
+
+    public static String getCookie(){
+        return "user_id="+DataBank.getString("userID")+";";
+    }
+
+    public static int dpToPx(int dp, Context context) {
+        float density = context.getResources().getDisplayMetrics().density;
+        return Math.round(dp * density);
     }
 }

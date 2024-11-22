@@ -52,7 +52,7 @@ public class Navbar extends LinearLayout {
         this.addView(addNewButton(context, R.drawable.school,  R.layout.school, "school"));
         this.addView(addNewButton(context, R.drawable.exit,  R.layout.entry, "exit"));
 
-        (buttons.get("home")).setColorFilter(ContextCompat.getColor(activity, R.color.green), PorterDuff.Mode.SRC_IN);
+        buttons.get("home").setColorFilter(ContextCompat.getColor(activity, R.color.green), PorterDuff.Mode.SRC_IN);
     }
 
     private View addNewButton(Context context, int imageId, int layoutChange, String name){
@@ -65,7 +65,7 @@ public class Navbar extends LinearLayout {
                 100,
                 100
         );
-        params.setMargins(0,0, getWidth(),0);
+        params.setMargins(0,0, 16,0);
         params.gravity = Gravity.CENTER; // Центрирование изображения
         button.setLayoutParams(params);
         button.setOnClickListener(layoutChange(layoutChange));

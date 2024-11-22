@@ -49,7 +49,7 @@ public class TeachersPanel extends LinearLayout {
                     JSONObject personalization = jsonObject.getJSONObject("personalization");
                     url = "https://www.helpfront.ru" + personalization.getString("avatar").split("www")[1];
                 }
-                this.addView(new UserCart(context, String.format("%s %s", info.getString("name"), info.getString("surname")), "Я тут учитель", url));
+                this.addView(new UserCart(context, String.format("%s %s", info.getString("name"), info.getString("surname")), getGroupsName(jsonObject), url));
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
@@ -74,5 +74,19 @@ public class TeachersPanel extends LinearLayout {
         });
 
         return teachers;
+    }
+
+    private String getGroupsName(JSONObject object) throws JSONException {
+        List<String> groupsName = new ArrayList<>();
+        JSONArray groups = object.getJSONArray("groups");
+        Map<String, JSONObject> groupsMap = (Map<String, JSONObject>) DataBank.get("groups");
+        for (int i = 0; i < groups.length(); i++) {
+            String groupId = groups.getString(i);
+            JSONObject groupJson = groupsMap.get(groupId);
+            String name = groupJson.getString("name");
+            int number = groupJson.getInt("number");
+            groupsName.add(String.format("%s %s", name, number));
+        }
+        return String.join(", ", groupsName);
     }
 }

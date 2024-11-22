@@ -89,7 +89,7 @@ public class UserCart extends ConstraintLayout {
         textView1.setText(name);
         textView1.setTextColor(getResources().getColor(R.color.white));
         textView1.setTextSize(24);
-        LinearLayout.LayoutParams textView1Params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Functions.dpToPx(45, context));
+        LinearLayout.LayoutParams textView1Params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Functions.dpToPx(30, context));
         textView1.setLayoutParams(textView1Params);
         linearLayout.addView(textView1);
 
@@ -98,7 +98,7 @@ public class UserCart extends ConstraintLayout {
         textView2.setText(bottomText);
         textView2.setTextColor(getResources().getColor(R.color.white));
         textView2.setTextSize(16);
-        LinearLayout.LayoutParams textView2Params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Functions.dpToPx(42, context));
+        LinearLayout.LayoutParams textView2Params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Functions.dpToPx(60, context));
         textView2.setLayoutParams(textView2Params);
         linearLayout.addView(textView2);
 

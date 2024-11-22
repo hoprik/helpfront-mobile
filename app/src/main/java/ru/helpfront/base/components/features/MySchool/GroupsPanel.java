@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,6 +54,7 @@ public class GroupsPanel extends LinearLayout{
                 String name = jsonObject.getString("name");
                 int number = jsonObject.getInt("number");
                 int money = jsonObject.getInt("money");
+                JSONArray users = jsonObject.getJSONArray("users");
                 if (!avatar.isEmpty()){
                     avatar = "https://www.helpfront.ru" + avatar.split("www")[1];
                 }
@@ -60,7 +62,7 @@ public class GroupsPanel extends LinearLayout{
                     status = "Не указан";
                 }
                 String fullName = String.format("%s %s", name, number);
-                this.addView(renderGroup(context, fullName, status, avatar, money));
+                this.addView(renderGroup(context, fullName, status, avatar, money, users));
 
             } catch (JSONException e) {
                 throw new RuntimeException(e);
@@ -88,11 +90,11 @@ public class GroupsPanel extends LinearLayout{
         return R.color.red;
     }
 
-    private ConstraintLayout renderGroup(Context context, String name, String slogan, String avatar, int money){
+    private ConstraintLayout renderGroup(Context context, String name, String slogan, String avatar, int money, JSONArray users) throws JSONException {
         ConstraintLayout constraintLayout = new ConstraintLayout(context);
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.MATCH_PARENT,
-                Functions.dpToPx(180, context));
+                ConstraintLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(0,0,0, 16);
         constraintLayout.setLayoutParams(params);
         // Устанавливаем фон
@@ -106,6 +108,7 @@ public class GroupsPanel extends LinearLayout{
         paramsImageView.setMargins(Functions.dpToPx(8, context), Functions.dpToPx(8, context), 0, 0);
         imageView.setLayoutParams(paramsImageView);
         int color = getResources().getColor(getRandomColor());
+        Log.d("avatar", avatar);
         Glide.with(this)
                 .load(avatar)
                 .transform(new RoundedCorners(100))
@@ -158,7 +161,7 @@ public class GroupsPanel extends LinearLayout{
         // Создаем TextView для участников
         TextView textView4 = new TextView(context);
         textView4.setId(View.generateViewId());
-        textView4.setText("Участники: 11");
+        textView4.setText("Участники: "+users.length());
         textView4.setTextSize(15);
         textView4.setTextColor(ContextCompat.getColor(context, R.color.white));
         textView4.setLayoutParams(new ConstraintLayout.LayoutParams(
@@ -173,19 +176,44 @@ public class GroupsPanel extends LinearLayout{
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(Functions.dpToPx(367, context), Functions.dpToPx(48, context)));
         constraintLayout.addView(linearLayout);
 
-        // Создаем ImageView для первого участника
-        ImageView imageView3 = new ImageView(context);
-        imageView3.setId(View.generateViewId());
-        imageView3.setLayoutParams(new LinearLayout.LayoutParams(Functions.dpToPx(40, context), Functions.dpToPx(40, context)));
-        imageView3.setImageResource(R.drawable.duck_icon);
-        linearLayout.addView(imageView3);
+        for (int i = 0; i < users.length(); i++) {
+            String publicId = users.getString(i);
+            Map<String, JSONObject> usersMap = (Map<String, JSONObject>) DataBank.get("users");
+            String avatarUrl = "";
+            if (usersMap.get(publicId).has("personalization")) {
+                String avatarData = usersMap.get(publicId).getJSONObject("personalization").getString("avatar");
+                avatarUrl = "https://www.helpfront.ru" + avatarData.split("www")[1];
+            }
+            ImageView avatarImage = new ImageView(context);
+            avatarImage.setId(View.generateViewId());
+            avatarImage.setLayoutParams(new ConstraintLayout.LayoutParams(Functions.dpToPx(40, context), Functions.dpToPx(40, context)));
 
-        // Создаем ImageView для второго участника
-        ImageView imageView4 = new ImageView(context);
-        imageView4.setId(View.generateViewId());
-        imageView4.setLayoutParams(new LinearLayout.LayoutParams(Functions.dpToPx(40, context), Functions.dpToPx(40, context)));
-        imageView4.setImageResource(R.drawable.duck_icon);
-        linearLayout.addView(imageView4);
+            // Установка ScaleType
+            avatarImage.setScaleType(ImageView.ScaleType.CENTER_CROP); // или CENTER_INSIDE, в зависимости от вашего требования
+
+            ConstraintLayout.LayoutParams paramsAvatarView = (ConstraintLayout.LayoutParams) avatarImage.getLayoutParams();
+            if (i == 0){
+                paramsAvatarView.setMargins(Functions.dpToPx(0, context), Functions.dpToPx(8, context), 0, 0);
+            }else{
+                paramsAvatarView.setMargins(-Functions.dpToPx(16, context), Functions.dpToPx(8, context), 0, 0);
+            }
+
+            avatarImage.setLayoutParams(paramsAvatarView);
+
+            int colorPlaceholder = getResources().getColor(getRandomColor());
+            Log.d("avatar", avatarUrl);
+
+            Glide.with(this)
+                    .load(avatarUrl)
+                    .transform(new RoundedCorners(100))
+                    .placeholder(new ColorDrawable(colorPlaceholder))
+                    .error(new ColorDrawable(colorPlaceholder))
+                    .override(Functions.dpToPx(40, context), Functions.dpToPx(40, context)) // Установите размеры для Glide
+                    .into(avatarImage);
+
+            linearLayout.addView(avatarImage);
+        }
+
 
         // Устанавливаем ограничения для элементов
         ConstraintSet constraintSet = new ConstraintSet();
@@ -220,7 +248,7 @@ public class GroupsPanel extends LinearLayout{
     }
 
     private Collection<JSONObject> getGroups() {
-        Map<String, JSONObject> users = (Map<String, JSONObject>) DataBank.get("groups");
-        return users.values();
+        Map<String, JSONObject> groups = (Map<String, JSONObject>) DataBank.get("groups");
+        return groups.values();
     }
 }

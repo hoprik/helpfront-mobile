@@ -13,7 +13,6 @@ import ru.helpfront.base.MainActivity;
 import ru.helpfront.base.R;
 import ru.helpfront.base.types.User;
 
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Random;
 
@@ -43,7 +42,7 @@ public class UserProfile {
 
     private void init(ComponentActivity context, String name, String group, String avatar, String role, ZonedDateTime birthday, int doneTask, int likes, int coins, String collectables) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View homeView = inflater.inflate(R.layout.userui, null);
+        View homeView = inflater.inflate(R.layout.userprofile, null);
         ((TextView) homeView.findViewById(R.id.profileUserName)).setText(name);
         ((ImageView) homeView.findViewById(R.id.profileBirthdayIcon)).setImageResource(R.drawable.birthday);
         ((TextView) homeView.findViewById(R.id.profileBirthdayName)).setText(String.format("%02d.%02d.%04d", birthday.getDayOfMonth(), birthday.getMonth().getValue(), birthday.getYear()));

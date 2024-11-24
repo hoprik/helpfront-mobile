@@ -15,6 +15,7 @@ import ru.helpfront.base.functions.Network;
 import ru.helpfront.base.pages.EntryPage;
 import ru.helpfront.base.pages.Page;
 import ru.helpfront.base.pages.ProfilePage;
+import ru.helpfront.base.types.User;
 
 import java.io.IOException;
 
@@ -46,12 +47,10 @@ public class MainActivity extends ComponentActivity{
             public void onResponse(Response response) throws IOException, JSONException {
                 JSONObject resData = new JSONObject(response.body().string());
                 JSONObject data = resData.getJSONObject("data");
-                JSONObject user = data.getJSONObject("user");
-                DataBank.add("userID", userID, true);
-                DataBank.add("email", user.getString("email"), true);
-                DataBank.add("info", user.getJSONObject("info"), true);
-                DataBank.add("login", user.getString("login"), true);
-                DataBank.add("publicId", user.getString("publicId"), true);
+                JSONObject userJson = data.getJSONObject("user");
+                User user = new User();
+                user.parse(userJson);
+                DataBank.add("user", user, true);
                 new ProfilePage(activity);
             }
         });

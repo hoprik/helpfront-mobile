@@ -1,8 +1,8 @@
-package ru.helpfront.base.components.features.sidebar;
+package ru.helpfront.base.components.features.Sidebar;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,8 +13,9 @@ import androidx.core.content.ContextCompat;
 import ru.helpfront.base.R;
 import ru.helpfront.base.pages.Page;
 
-public class Sidebar extends ConstraintLayout {
-    public Sidebar(Context context, View view) {
+@SuppressLint("ViewConstructor")
+public class SidePanel extends ConstraintLayout {
+    public SidePanel(Context context, View view) {
         super(context);
         init(context, view);
     }

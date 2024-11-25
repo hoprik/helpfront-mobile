@@ -14,6 +14,7 @@ import ru.helpfront.base.components.features.MySchool.TeachersPanel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Random;
 
 public class Functions {
     public static void changeLayout(ComponentActivity activity, int layoutId, int renderId) {
@@ -47,5 +48,24 @@ public class Functions {
         }
         Drawable image = Drawable.createFromStream(URLcontent, url);
         return image;
+    }
+
+    public static int getRandomColor(){
+        Random rand = new Random();
+        int n = rand.nextInt(100);
+        n+=1;
+        if (n < 26){
+            return R.color.red;
+        }
+        if (n > 26 && n < 51){
+            return R.color.green;
+        }
+        if (n > 51 && n < 76){
+            return R.color.yellow;
+        }
+        if (n > 76 && n < 100){
+            return R.color.blue;
+        }
+        return R.color.red;
     }
 }

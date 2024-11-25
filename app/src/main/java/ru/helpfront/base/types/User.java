@@ -30,7 +30,9 @@ public class User {
     int completedTasks;
 
     public void parse(JSONObject user) {
-        Log.d("user", user.toString());
+        if (user == null){
+            return;
+        }
         try {
             if (user.has("info")){
                 name = user.getJSONObject("info").optString("name", "");
@@ -122,6 +124,9 @@ public class User {
     public String getGroupsName(){
         List<String> groupsName = new ArrayList<>();
         Map<String, JSONObject> groupsMap = (Map<String, JSONObject>) DataBank.get("groups");
+        if (groups.length() == 0){
+            return "";
+        }
         for (int i = 0; i < groups.length(); i++) {
             try {
                 String groupId = groups.getString(i);

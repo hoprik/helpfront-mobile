@@ -23,44 +23,13 @@ import java.util.Random;
 
 @SuppressLint("ViewConstructor")
 public class UserCard extends ConstraintLayout {
-    public UserCard(Context context) {
-        super(context);
-        User user = new User();
-        user.parse(DataBank.getJsonObject("user"));
-        init(context, user, false);
-    }
     public UserCard(Context context, JSONObject object, Boolean isTeacher) {
         super(context);
         User user = new User();
         user.parse(object);
         init(context, user, isTeacher);
     }
-    public UserCard(Context context, String userId) {
-        super(context);
-        User user = new User();
-        user.parse(((Map<String, JSONObject>)DataBank.get("users")).get(userId));
-        init(context, user, false);
-    }
 
-
-    private int getRandomColor(){
-        Random rand = new Random();
-        int n = rand.nextInt(100);
-        n+=1;
-        if (n < 26){
-            return R.color.red;
-        }
-        if (n > 26 && n < 51){
-            return R.color.green;
-        }
-        if (n > 51 && n < 76){
-            return R.color.yellow;
-        }
-        if (n > 76 && n < 100){
-            return R.color.blue;
-        }
-        return R.color.red;
-    }
 
     private void init(Context context, User user, Boolean isTeacher) {
         ImageView imageView = new ImageView(context);
@@ -71,14 +40,13 @@ public class UserCard extends ConstraintLayout {
         paramsWebView.startToStart = LayoutParams.PARENT_ID;
         paramsWebView.topToTop = LayoutParams.PARENT_ID;
         imageView.setLayoutParams(paramsWebView);
-        int color = getResources().getColor(getRandomColor());
-        Log.d("avatar", user.getAvatar());
+        int color = getResources().getColor(Functions.getRandomColor());
         Glide.with(this)
                 .load(user.getAvatar())
                 .transform(new RoundedCorners(100))
                 .placeholder(new ColorDrawable(color))
                 .error(new ColorDrawable(color))
-                .override(90, 90) // Set the desired size
+                .override(90, 90)
                 .into(imageView);
         addView(imageView);
 

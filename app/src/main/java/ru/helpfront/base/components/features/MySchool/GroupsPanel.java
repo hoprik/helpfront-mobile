@@ -20,9 +20,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import ru.helpfront.base.R;
+import ru.helpfront.base.components.features.Sidebar.GroupProfile;
+import ru.helpfront.base.components.features.Sidebar.UserProfile;
 import ru.helpfront.base.functions.DataBank;
 import ru.helpfront.base.functions.Functions;
 import ru.helpfront.base.functions.Network;
+import ru.helpfront.base.types.User;
 
 import java.io.IOException;
 import java.util.*;
@@ -47,7 +50,7 @@ public class GroupsPanel extends LinearLayout{
     private void init(Context context) {
         this.setOrientation(VERTICAL);
         this.setPadding(16, 16, 16, 16);
-        getGroups().forEach(jsonObject -> {
+        getGroups().forEach((s, jsonObject) -> {
             try {
                 String avatar = jsonObject.getString("avatar");
                 String status = jsonObject.getString("status");
@@ -62,7 +65,7 @@ public class GroupsPanel extends LinearLayout{
                     status = "Не указан";
                 }
                 String fullName = String.format("%s %s", name, number);
-                this.addView(renderGroup(context, fullName, status, avatar, money, users));
+                this.addView(renderGroup(context, fullName, status, avatar, money, users, s));
 
             } catch (JSONException e) {
                 throw new RuntimeException(e);
@@ -71,26 +74,9 @@ public class GroupsPanel extends LinearLayout{
 
     }
 
-    private int getRandomColor(){
-        Random rand = new Random();
-        int n = rand.nextInt(100);
-        n+=1;
-        if (n < 26){
-            return R.color.red;
-        }
-        if (n > 26 && n < 51){
-            return R.color.green;
-        }
-        if (n > 51 && n < 76){
-            return R.color.yellow;
-        }
-        if (n > 76 && n < 100){
-            return R.color.blue;
-        }
-        return R.color.red;
-    }
 
-    private ConstraintLayout renderGroup(Context context, String name, String slogan, String avatar, int money, JSONArray users) throws JSONException {
+
+    private ConstraintLayout renderGroup(Context context, String name, String slogan, String avatar, int money, JSONArray users, String groupId) throws JSONException {
         ConstraintLayout constraintLayout = new ConstraintLayout(context);
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.MATCH_PARENT,
@@ -107,8 +93,7 @@ public class GroupsPanel extends LinearLayout{
         ConstraintLayout.LayoutParams paramsImageView = (ConstraintLayout.LayoutParams) imageView.getLayoutParams();
         paramsImageView.setMargins(Functions.dpToPx(8, context), Functions.dpToPx(8, context), 0, 0);
         imageView.setLayoutParams(paramsImageView);
-        int color = getResources().getColor(getRandomColor());
-        Log.d("avatar", avatar);
+        int color = getResources().getColor(Functions.getRandomColor());
         Glide.with(this)
                 .load(avatar)
                 .transform(new RoundedCorners(100))
@@ -200,7 +185,7 @@ public class GroupsPanel extends LinearLayout{
 
             avatarImage.setLayoutParams(paramsAvatarView);
 
-            int colorPlaceholder = getResources().getColor(getRandomColor());
+            int colorPlaceholder = getResources().getColor(Functions.getRandomColor());
             Log.d("avatar", avatarUrl);
 
             Glide.with(this)
@@ -242,13 +227,18 @@ public class GroupsPanel extends LinearLayout{
         constraintSet.connect(linearLayout.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 0);
 
         constraintSet.applyTo(constraintLayout);
-
+        constraintLayout.setOnClickListener(openSideBar(context, groupId, name, avatar, slogan, money));
         // Устанавливаем созданный ConstraintLayout как содержимое активности
         return constraintLayout;
     }
 
-    private Collection<JSONObject> getGroups() {
+    private Map<String, JSONObject> getGroups() {
         Map<String, JSONObject> groups = (Map<String, JSONObject>) DataBank.get("groups");
-        return groups.values();
+        return groups;
     }
+
+    private View.OnClickListener openSideBar(Context context, String groupId, String name, String avatar, String slogan, int coins){
+        return v -> new GroupProfile(context, groupId, name, avatar, slogan, coins);
+    }
+
 }

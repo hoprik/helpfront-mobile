@@ -33,27 +33,20 @@ public class School extends Page {
     public CompletableFuture<Void> getUsers() {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
-        Network.sendPOST("api/user/getList", "{}", Functions.getCookie(), new Network.Callback() {
-            @Override
-            public void onFailure(IOException e) {
+        Network.sendPOST("api/user/getList", "{}", Functions.getCookie(), response -> {
+            JSONObject object = new JSONObject(response.body().string());
+            if (!object.has("data")) {
+                return;
             }
-
-            @Override
-            public void onResponse(Response response) throws IOException, JSONException {
-                JSONObject object = new JSONObject(response.body().string());
-                if (!object.has("data")) {
-                    return;
-                }
-                Map<String, JSONObject> users = new HashMap<>();
-                JSONArray array = object.getJSONArray("data");
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject user = array.getJSONObject(i);
-                    String publicId = user.getString("publicId");
-                    users.put(publicId, user);
-                }
-                DataBank.add("users", users, false);
-                future.complete(null);
+            Map<String, JSONObject> users = new HashMap<>();
+            JSONArray array = object.getJSONArray("data");
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject user = array.getJSONObject(i);
+                String publicId = user.getString("publicId");
+                users.put(publicId, user);
             }
+            DataBank.add("users", users, false);
+            future.complete(null);
         });
 
         return future;
@@ -61,27 +54,20 @@ public class School extends Page {
     public CompletableFuture<Void> getGroups() {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
-        Network.sendPOST("api/group/getList", "{}", Functions.getCookie(), new Network.Callback() {
-            @Override
-            public void onFailure(IOException e) {
+        Network.sendPOST("api/group/getList", "{}", Functions.getCookie(), response -> {
+            JSONObject object = new JSONObject(response.body().string());
+            if (!object.has("data")) {
+                return;
             }
-
-            @Override
-            public void onResponse(Response response) throws IOException, JSONException {
-                JSONObject object = new JSONObject(response.body().string());
-                if (!object.has("data")) {
-                    return;
-                }
-                Map<String, JSONObject> groups = new HashMap<>();
-                JSONArray array = object.getJSONArray("data");
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject group = array.getJSONObject(i);
-                    String id = group.getString("id");
-                    groups.put(id, group);
-                }
-                DataBank.add("groups", groups, false);
-                future.complete(null);
+            Map<String, JSONObject> groups = new HashMap<>();
+            JSONArray array = object.getJSONArray("data");
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject group = array.getJSONObject(i);
+                String id = group.getString("id");
+                groups.put(id, group);
             }
+            DataBank.add("groups", groups, false);
+            future.complete(null);
         });
 
         return future;

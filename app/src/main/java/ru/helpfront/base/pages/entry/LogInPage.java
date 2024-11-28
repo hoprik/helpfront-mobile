@@ -46,27 +46,19 @@ public class LogInPage extends Page {
             String passwordText = logPassword.getText().toString();
             String jsonData = "{\"login\":\"" + loginText + "\",\"email\":\"" + loginText + "\",\"password\":\"" + passwordText + "\"}";
 
-            Network.sendPOST("api/user/login", jsonData, "", new Network.Callback() {
-                @Override
-                public void onFailure(IOException e) {
-                    throw new RuntimeException(e);
+            Network.sendPOST("api/user/login", jsonData, "", response -> {
+                JSONObject object = new JSONObject(response.body().string());
+                if (object.has("error")) {
+                    Toast.makeText(activity, object.getString("error"), Toast.LENGTH_LONG).show();
                 }
-
-                @Override
-                public void onResponse(Response response) throws IOException, JSONException{
-                    JSONObject object = new JSONObject(response.body().string());
-                    if (object.has("error")) {
-                        Toast.makeText(activity, object.getString("error"), Toast.LENGTH_LONG).show();
-                    }
-                    if (object.has("data")) {
-                        JSONObject object1 = object.getJSONObject("data");
-                        String userID = object1.getString("userId");
-                        SharedPreferences sharedPreferences = activity.getSharedPreferences("helpfrontData", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("userId", userID);
-                        editor.apply();
-                        Network.initProfilePage(userID, activity);
-                    }
+                if (object.has("data")) {
+                    JSONObject object1 = object.getJSONObject("data");
+                    String userID = object1.getString("userId");
+                    SharedPreferences sharedPreferences = activity.getSharedPreferences("helpfrontData", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("userId", userID);
+                    editor.apply();
+                    Network.initProfilePage(userID, activity);
                 }
             });
         };

@@ -33,21 +33,13 @@ public class GroupProfile extends ScrollView {
 
     public GroupProfile(@NonNull @NotNull Context context, String groupId, String nameGroup, String avatar, String slogan, int coins) {
         super(context);
-        Network.sendPOST("api/group/getUsers", "{\"id\":\""+groupId+"\"}", Functions.getCookie(), new Network.Callback() {
-            @Override
-            public void onFailure(IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException, JSONException {
-                JSONObject object = new JSONObject(response.body().string());
-                Log.d("debug", object.toString());
-                JSONObject data = object.getJSONObject("data");
-                Group group = new Group();
-                group.parse(data);
-                init(context, group, nameGroup, avatar, slogan, coins);
-            }
+        Network.sendPOST("api/group/getUsers", "{\"id\":\""+groupId+"\"}", Functions.getCookie(), response -> {
+            JSONObject object = new JSONObject(response.body().string());
+            Log.d("debug", object.toString());
+            JSONObject data = object.getJSONObject("data");
+            Group group = new Group();
+            group.parse(data);
+            init(context, group, nameGroup, avatar, slogan, coins);
         });
 
     }

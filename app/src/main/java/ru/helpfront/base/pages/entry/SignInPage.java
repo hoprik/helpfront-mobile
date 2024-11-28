@@ -89,23 +89,15 @@ public class SignInPage extends Page {
                 return;
             }
 
-            Network.sendPOST("api/user/create", String.format("{\"name\":\"%s\",\"surname\":\"%s\",\"email\":\"%s\",\"login\":\"%s\",\"password\":\"%s\",\"retryPassword\":\"%s\"}", convertName(regFName), convertName(regLName), regEmail, regLogin, regPasswordF, regPasswordL), "", new Network.Callback() {
-                @Override
-                public void onFailure(IOException e) {
-
+            Network.sendPOST("api/user/create", String.format("{\"name\":\"%s\",\"surname\":\"%s\",\"email\":\"%s\",\"login\":\"%s\",\"password\":\"%s\",\"retryPassword\":\"%s\"}", convertName(regFName), convertName(regLName), regEmail, regLogin, regPasswordF, regPasswordL), "", response -> {
+                JSONObject data = new JSONObject(response.body().string());
+                String tempId = data.optString("data", "");
+                if (tempId.isEmpty()){
+                    Toast.makeText(activity, "Общая ошибка сервера, перезагрузите страницу", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                new ConfirmPage(activity, renderId, tempId);
 
-                @Override
-                public void onResponse(Response response) throws IOException, JSONException {
-                    JSONObject data = new JSONObject(response.body().string());
-                    String tempId = data.optString("data", "");
-                    if (tempId.isEmpty()){
-                        Toast.makeText(activity, "Общая ошибка сервера, перезагрузите страницу", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    new ConfirmPage(activity, renderId, tempId);
-
-                }
             });
 
 

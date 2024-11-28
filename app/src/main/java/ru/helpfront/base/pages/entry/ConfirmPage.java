@@ -38,22 +38,14 @@ public class ConfirmPage extends Page {
                 return;
             }
 
-            Network.sendPOST("api/user/confirm", String.format("{\"id\":\"%s\",\"code\":\"%s\"}", tempId, code), "", new Network.Callback() {
-                @Override
-                public void onFailure(IOException e) {
-
-                }
-
-                @Override
-                public void onResponse(Response response) throws IOException, JSONException {
-                    JSONObject data = new JSONObject(response.body().string());
-                    String userID = data.optString("data", "");
-                    SharedPreferences sharedPreferences = activity.getSharedPreferences("helpfrontData", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("userId", userID);
-                    editor.apply();
-                    Network.initProfilePage(userID, activity);
-                }
+            Network.sendPOST("api/user/confirm", String.format("{\"id\":\"%s\",\"code\":\"%s\"}", tempId, code), "", response -> {
+                JSONObject data = new JSONObject(response.body().string());
+                String userID = data.optString("data", "");
+                SharedPreferences sharedPreferences = activity.getSharedPreferences("helpfrontData", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("userId", userID);
+                editor.apply();
+                Network.initProfilePage(userID, activity);
             });
 
 

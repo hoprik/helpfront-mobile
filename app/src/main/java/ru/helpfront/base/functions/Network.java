@@ -3,10 +3,12 @@ package ru.helpfront.base.functions;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.Toast;
 import androidx.activity.ComponentActivity;
 import okhttp3.*;
 import org.json.JSONException;
 import org.json.JSONObject;
+import ru.helpfront.base.MainActivity;
 import ru.helpfront.base.pages.ProfilePage;
 import ru.helpfront.base.types.User;
 
@@ -29,9 +31,9 @@ public class Network {
         client.newCall(request).enqueue(new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                handler.post(() -> callback.onFailure(e));
-
+                handler.post(()->{
+                    Toast.makeText(MainActivity.activity, "Нет подключения к сети", Toast.LENGTH_SHORT).show();
+                });
             }
 
             @Override
@@ -48,27 +50,18 @@ public class Network {
     }
 
     public static void initProfilePage(String userID, ComponentActivity activity){
-        Network.sendPOST("api/user/getOne", "{}", "user_id=" + userID + ";", new Network.Callback() {
-            @Override
-            public void onFailure(IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException, JSONException {
-                JSONObject resData = new JSONObject(response.body().string());
-                JSONObject data = resData.getJSONObject("data");
-                JSONObject userJson = data.getJSONObject("user");
-                User user = new User();
-                user.parse(userJson);
-                DataBank.add("user", user, true);
-                new ProfilePage(activity);
-            }
+        Network.sendPOST("api/user/getOne", "{}", "user_id=" + userID + ";", response -> {
+            JSONObject resData = new JSONObject(response.body().string());
+            JSONObject data = resData.getJSONObject("data");
+            JSONObject userJson = data.getJSONObject("user");
+            User user = new User();
+            user.parse(userJson);
+            DataBank.add("user", user, true);
+            new ProfilePage(activity);
         });
     }
 
     public interface Callback {
-        void onFailure(IOException e);
         void onResponse(Response response) throws IOException, JSONException;
     }
 }

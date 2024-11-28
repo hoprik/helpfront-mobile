@@ -1,17 +1,24 @@
 package ru.helpfront.base.components.ui;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import androidx.appcompat.widget.AppCompatButton;
 import ru.helpfront.base.R;
 
-public class Button extends androidx.appcompat.widget.AppCompatButton {
+public class Button extends AppCompatButton {
     private GradientDrawable backgroundDrawable;
+    private ImageView imageView;  // Добавляем ImageView для отображения изображения
 
     public Button(Context context) {
         super(context);
@@ -29,16 +36,14 @@ public class Button extends androidx.appcompat.widget.AppCompatButton {
     }
 
     private void init(AttributeSet attrs) {
-        // Создаем GradientDrawable
+        // Создаем GradientDrawable для фона кнопки
         backgroundDrawable = new GradientDrawable();
         backgroundDrawable.setShape(GradientDrawable.RECTANGLE);
 
-        // Устанавливаем значения по умолчанию
-        int defaultColor = 0xFFFFFFFF; // Белый
-        float defaultRadius = 0; // Радиус закругления по умолчанию
-        int defaultPadding = 0; // Радиус закругления по умолчанию
+        int defaultColor = 0xFFFFFFFF;
+        float defaultRadius = 0;
+        int defaultPadding = 0;
 
-        // Получаем атрибуты из XML
         if (attrs != null) {
             TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Button);
             int backgroundColor = a.getColor(R.styleable.Button_backgroundColor, defaultColor);
@@ -50,9 +55,10 @@ public class Button extends androidx.appcompat.widget.AppCompatButton {
             float cornerRadiusTop = a.getDimension(R.styleable.Button_cornerRadiusTop, cornerRadius);
             float cornerRadiusRight = a.getDimension(R.styleable.Button_cornerRadiusRight, cornerRadius);
             float cornerRadiusBottom = a.getDimension(R.styleable.Button_cornerRadiusBottom, cornerRadius);
+            Drawable imageDrawable = a.getDrawable(R.styleable.Button_imageSrc);
             a.recycle();
 
-            // Устанавливаем цвет и радиус
+            // Устанавливаем цвет и радиус для кнопки
             backgroundDrawable.setColor(backgroundColor);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 backgroundDrawable.setPadding(paddingX, paddingY, paddingX, paddingY);
@@ -63,8 +69,17 @@ public class Button extends androidx.appcompat.widget.AppCompatButton {
                     cornerRadiusRight, cornerRadiusBottom,
                     cornerRadiusLeft, cornerRadiusBottom
             });
+
+            // Устанавливаем размеры текста и фон кнопки
+            setTextSize(16);
+            setBackground(backgroundDrawable);
+            setGravity(Gravity.CENTER);
+
+            // Если изображение задано, добавляем его
+            if (imageDrawable != null) {
+                setImageDrawableToFitButton(imageDrawable);
+            }
         } else {
-            // Устанавливаем значения по умолчанию
             backgroundDrawable.setColor(defaultColor);
             backgroundDrawable.setCornerRadius(defaultRadius);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -77,12 +92,9 @@ public class Button extends androidx.appcompat.widget.AppCompatButton {
                     defaultRadius, defaultRadius
             });
         }
-        setTextSize(16);
-
-        // Устанавливаем фон кнопки
-        setBackground(backgroundDrawable);
-        // Центрируем текст
-        setGravity(Gravity.CENTER);
     }
 
+    private void setImageDrawableToFitButton(Drawable imageDrawable) {
+        setBackground(imageDrawable);
+    }
 }

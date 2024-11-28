@@ -10,6 +10,7 @@
         <attr name="cornerRadiusTop" format="dimension" />
         <attr name="cornerRadiusRight" format="dimension" />
         <attr name="cornerRadiusBottom" format="dimension" />
+        <attr name="imageSrc" format="reference" />
 
     </declare-styleable>
 </resources>

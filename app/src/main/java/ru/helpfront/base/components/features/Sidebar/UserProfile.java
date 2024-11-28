@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.activity.ComponentActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -19,6 +20,10 @@ import java.util.Random;
 
 public class UserProfile {
     public UserProfile(User user) {
+        if (user.getRole().equals("guest")){
+            Toast.makeText(MainActivity.activity, "Заблокированно демо пользователям", Toast.LENGTH_SHORT).show();
+            return;
+        }
         init(MainActivity.activity, user.getName()+" "+user.getSurname(), user.getGroupsName(), user.getAvatar(), user.getRole(), ZonedDateTime.parse(user.getBirthday()), user.getCompletedTasks(), user.getThanks(), user.getMoney(), "0");
     }
 

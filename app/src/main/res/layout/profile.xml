@@ -6,18 +6,17 @@
                                                    android:layout_width="match_parent"
                                                    android:layout_height="match_parent"
                                                    android:background="@color/firstBg" android:id="@+id/profileLayout">
+    <include
+            layout="@layout/home"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:id="@+id/view3"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/navbar"/>
     <ru.helpfront.base.components.features.Navbar
             android:layout_width="match_parent"
             android:layout_height="59dp"
             app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/navbar"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent">
     </ru.helpfront.base.components.features.Navbar>
-    <include
-            layout="@layout/home"
-            android:layout_width="match_parent"
-            android:layout_height="685dp" android:id="@+id/view3"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.0" app:layout_constraintVertical_bias="0.049"
-            app:layout_constraintBottom_toTopOf="@+id/navbar"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

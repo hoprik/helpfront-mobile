@@ -1,5 +1,7 @@
 package ru.helpfront.base.types;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class Const {
@@ -14,5 +16,20 @@ public class Const {
             String.format("^[a-zA-Z0-9а-яА-Я-_ ]{%d,%d}$", MIN_LENGTH_LOGIN, MAX_LENGTH_LOGIN),
             Pattern.CASE_INSENSITIVE
     );
+    public static final Map<Roles, String> ROLE_RUS = new HashMap<>();
+
+    static {
+        ROLE_RUS.put(Roles.ADMIN, "администратор");
+        ROLE_RUS.put(Roles.GUEST, "гость");
+        ROLE_RUS.put(Roles.STUDENT, "ученик");
+        ROLE_RUS.put(Roles.TEACHER, "учитель");
+    }
+    public enum Roles {
+        GUEST,
+        STUDENT,
+        TEACHER,
+        ADMIN
+    }
+
 
 }

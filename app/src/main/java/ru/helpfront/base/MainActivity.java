@@ -31,28 +31,9 @@ public class MainActivity extends ComponentActivity{
             new EntryPage(this);
         }
         else{
-            init(userID);
+            Network.initProfilePage(userID, this);
         }
     }
 
-    private void init(String userID){
-        ComponentActivity activity = this;
-        Network.sendPOST("api/user/getOne", "{}", "user_id=" + userID + ";", new Network.Callback() {
-            @Override
-            public void onFailure(IOException e) {
 
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException, JSONException {
-                JSONObject resData = new JSONObject(response.body().string());
-                JSONObject data = resData.getJSONObject("data");
-                JSONObject userJson = data.getJSONObject("user");
-                User user = new User();
-                user.parse(userJson);
-                DataBank.add("user", user, true);
-                new ProfilePage(activity);
-            }
-        });
-    }
 }

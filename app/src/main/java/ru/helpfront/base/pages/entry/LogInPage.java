@@ -65,25 +65,7 @@ public class LogInPage extends Page {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("userId", userID);
                         editor.apply();
-                        Network.sendPOST("api/user/getOne", "{}", "user_id=" + userID + ";", new Network.Callback() {
-                            @Override
-                            public void onFailure(IOException e) {
-
-                            }
-
-                            @Override
-                            public void onResponse(Response response) throws IOException, JSONException {
-                                JSONObject resData = new JSONObject(response.body().string());
-                                JSONObject data = resData.getJSONObject("data");
-                                JSONObject user = data.getJSONObject("user");
-                                DataBank.add("userID", userID, true);
-                                DataBank.add("email", user.getString("email"), true);
-                                DataBank.add("info", user.getJSONObject("info"), true);
-                                DataBank.add("login", user.getString("login"), true);
-                                DataBank.add("publicId", user.getString("publicId"), true);
-                                new ProfilePage(activity);
-                            }
-                        });
+                        Network.initProfilePage(userID, activity);
                     }
                 }
             });

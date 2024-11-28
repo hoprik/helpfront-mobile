@@ -1,9 +1,14 @@
 package ru.helpfront.base.functions;
 
+import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
+import androidx.activity.ComponentActivity;
 import okhttp3.*;
 import org.json.JSONException;
+import org.json.JSONObject;
+import ru.helpfront.base.pages.ProfilePage;
+import ru.helpfront.base.types.User;
 
 import java.io.IOException;
 
@@ -38,6 +43,26 @@ public class Network {
                         throw new RuntimeException(e);
                     }
                 });
+            }
+        });
+    }
+
+    public static void initProfilePage(String userID, ComponentActivity activity){
+        Network.sendPOST("api/user/getOne", "{}", "user_id=" + userID + ";", new Network.Callback() {
+            @Override
+            public void onFailure(IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException, JSONException {
+                JSONObject resData = new JSONObject(response.body().string());
+                JSONObject data = resData.getJSONObject("data");
+                JSONObject userJson = data.getJSONObject("user");
+                User user = new User();
+                user.parse(userJson);
+                DataBank.add("user", user, true);
+                new ProfilePage(activity);
             }
         });
     }

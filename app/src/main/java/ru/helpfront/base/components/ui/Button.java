@@ -10,7 +10,7 @@ import android.view.Gravity;
 import androidx.appcompat.widget.AppCompatButton;
 import ru.helpfront.base.R;
 
-public class Button extends AppCompatButton {
+public class Button extends androidx.appcompat.widget.AppCompatButton {
     private GradientDrawable backgroundDrawable;
 
     public Button(Context context) {

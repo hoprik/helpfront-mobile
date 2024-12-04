@@ -76,7 +76,8 @@ public class Navbar extends LinearLayout {
 
     private View.OnClickListener layoutChange(int layoutChange){
         return v -> {
-            Functions.changeLayout(activity, R.layout.loading, R.id.view3);
+            LoadingScreen screen = new LoadingScreen(activity);
+            Functions.changeLayout(activity, screen, R.id.view3);
             buttons.forEach((s, imageView) -> {
                 imageView.setColorFilter(ContextCompat.getColor(activity, R.color.white), PorterDuff.Mode.SRC_IN);
             });

@@ -31,6 +31,16 @@ public class Functions {
         includeLayout.addView(newLayout);
     }
 
+    public static void changeLayout(ComponentActivity activity, View layout, int renderId) {
+        ViewGroup includeLayout = activity.findViewById(renderId);
+        includeLayout.setBackgroundResource(R.color.transparent);
+        if (includeLayout.getChildCount() > 0) {
+            includeLayout.removeAllViews();
+        }
+
+        includeLayout.addView(layout);
+    }
+
     public static String getCookie(){
         return "user_id="+DataBank.getString("userID")+";";
     }

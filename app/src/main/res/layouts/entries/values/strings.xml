@@ -49,4 +49,5 @@
     <string name="error_lock_user">Заблокированно демо пользователям</string>
     <string name="group_data_error">Ошибка данных группы</string>
     <string name="group_no_avatar">Аватар не найден</string>
+    <string name="duck_work">duck work</string>
 </resources>

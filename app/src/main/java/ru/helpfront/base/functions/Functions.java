@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.activity.ComponentActivity;
 import okhttp3.Response;
+import ru.helpfront.base.MainActivity;
 import ru.helpfront.base.R;
 import ru.helpfront.base.components.features.MySchool.TeachersPanel;
 
@@ -67,5 +68,9 @@ public class Functions {
             return R.color.blue;
         }
         return R.color.red;
+    }
+
+    public static String getText(int id){
+        return MainActivity.activity.getResources().getString(id);
     }
 }

@@ -34,7 +34,7 @@ public class ConfirmPage extends Page {
         return v -> {
             String code = ((EditText)activity.findViewById(R.id.confirmInput)).getText().toString();
             if (code.length() < 4){
-                Toast.makeText(activity, "Код введен не полностью", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, activity.getString(R.string.error_code_length), Toast.LENGTH_SHORT).show();
                 return;
             }
 

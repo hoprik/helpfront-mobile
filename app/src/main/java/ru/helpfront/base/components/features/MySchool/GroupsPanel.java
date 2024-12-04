@@ -3,7 +3,6 @@ package ru.helpfront.base.components.features.MySchool;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,14 +13,12 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
 import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import ru.helpfront.base.R;
 import ru.helpfront.base.components.features.Sidebar.GroupProfile;
-import ru.helpfront.base.components.features.Sidebar.UserProfile;
 import ru.helpfront.base.functions.DataBank;
 import ru.helpfront.base.functions.Functions;
 import ru.helpfront.base.functions.Network;
@@ -64,17 +61,14 @@ public class GroupsPanel extends LinearLayout{
                 if (status.isEmpty()){
                     status = "Не указан";
                 }
-                String fullName = String.format("%s %s", name, number);
+                String fullName = String.format("%s %d", name, number); // Используем строку из ресурсов для имени
                 this.addView(renderGroup(context, fullName, status, avatar, money, users, s));
 
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
         });
-
     }
-
-
 
     private ConstraintLayout renderGroup(Context context, String name, String slogan, String avatar, int money, JSONArray users, String groupId) throws JSONException {
         ConstraintLayout constraintLayout = new ConstraintLayout(context);
@@ -117,7 +111,7 @@ public class GroupsPanel extends LinearLayout{
         // Создаем TextView для слогана
         TextView groupSlogan = new TextView(context);
         groupSlogan.setId(View.generateViewId());
-        groupSlogan.setText("Слоган: "+slogan);
+        groupSlogan.setText(String.format(context.getString(R.string.group_slogan), slogan)); // Используем строку из ресурсов
         groupSlogan.setTextSize(15);
         groupSlogan.setTextColor(ContextCompat.getColor(context, R.color.white));
         groupSlogan.setLayoutParams(new ConstraintLayout.LayoutParams(
@@ -128,7 +122,7 @@ public class GroupsPanel extends LinearLayout{
         // Создаем TextView для денег
         TextView groupMoney = new TextView(context);
         groupMoney.setId(View.generateViewId());
-        groupMoney.setText(String.valueOf(money));
+        groupMoney.setText(String.format(context.getString(R.string.group_coins), money)); // Используем строку из ресурсов
         groupMoney.setTextSize(15);
         groupMoney.setTextColor(ContextCompat.getColor(context, R.color.white));
         groupMoney.setLayoutParams(new ConstraintLayout.LayoutParams(
@@ -146,7 +140,7 @@ public class GroupsPanel extends LinearLayout{
         // Создаем TextView для участников
         TextView textView4 = new TextView(context);
         textView4.setId(View.generateViewId());
-        textView4.setText("Участники: "+users.length());
+        textView4.setText(String.format(context.getString(R.string.group_participants), users.length())); // Используем строку из ресурсов
         textView4.setTextSize(15);
         textView4.setTextColor(ContextCompat.getColor(context, R.color.white));
         textView4.setLayoutParams(new ConstraintLayout.LayoutParams(
@@ -186,7 +180,6 @@ public class GroupsPanel extends LinearLayout{
             avatarImage.setLayoutParams(paramsAvatarView);
 
             int colorPlaceholder = getResources().getColor(Functions.getRandomColor());
-            Log.d("avatar", avatarUrl);
 
             Glide.with(this)
                     .load(avatarUrl)
@@ -198,7 +191,6 @@ public class GroupsPanel extends LinearLayout{
 
             linearLayout.addView(avatarImage);
         }
-
 
         // Устанавливаем ограничения для элементов
         ConstraintSet constraintSet = new ConstraintSet();
@@ -228,7 +220,7 @@ public class GroupsPanel extends LinearLayout{
 
         constraintSet.applyTo(constraintLayout);
         constraintLayout.setOnClickListener(openSideBar(context, groupId, name, avatar, slogan, money));
-        // Устанавливаем созданный ConstraintLayout как содержимое активности
+
         return constraintLayout;
     }
 

@@ -21,7 +21,7 @@ import java.util.Random;
 public class UserProfile {
     public UserProfile(User user) {
         if (user.getRole().equals("guest")){
-            Toast.makeText(MainActivity.activity, "Заблокированно демо пользователям", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.activity, Functions.getText(R.string.error_lock_user), Toast.LENGTH_SHORT).show();
             return;
         }
         init(MainActivity.activity, user.getName()+" "+user.getSurname(), user.getGroupsName(), user.getAvatar(), user.getRole(), ZonedDateTime.parse(user.getBirthday()), user.getCompletedTasks(), user.getThanks(), user.getMoney(), "0");

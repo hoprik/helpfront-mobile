@@ -39,6 +39,6 @@ public class Home extends Page {
 
     private void greating() throws JSONException {
         JSONObject info = DataBank.getJsonObject("info");
-        ((TextView) this.activity.findViewById(R.id.greating)).setText("Привет, "+ ((User)DataBank.get("user")).getName());
+        ((TextView) this.activity.findViewById(R.id.greating)).setText(Functions.getText(R.string.greating)+", "+ ((User)DataBank.get("user")).getName());
     }
 }

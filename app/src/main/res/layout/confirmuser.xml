@@ -20,7 +20,7 @@
             android:background="@drawable/rounded_bg" app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="0.441"/>
     <TextView
-            android:text="Введите код с почты"
+            android:text="@string/entercodefrommail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/textView3"
             app:layout_constraintTop_toTopOf="parent"
@@ -29,7 +29,7 @@
             app:layout_constraintVertical_bias="0.823" android:textColor="@color/white" android:textStyle="bold"
             android:textSize="26sp"/>
     <ru.helpfront.base.components.ui.Button
-            android:text="Подтвердить"
+            android:text="@string/confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/confirmButton"
             app:layout_constraintTop_toBottomOf="@id/confirmInput"

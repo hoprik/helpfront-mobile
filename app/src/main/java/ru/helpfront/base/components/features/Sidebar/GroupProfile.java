@@ -41,9 +41,8 @@ public class GroupProfile extends ScrollView {
             group.parse(data);
             init(context, group, nameGroup, avatar, slogan, coins);
         });
-
     }
-    
+
     public void init(Context context, Group group, String nameGroup, String avatar, String slogan, int coins){
         // Создаем основной ConstraintLayout
         ConstraintLayout constraintLayout = new ConstraintLayout(context);
@@ -55,7 +54,7 @@ public class GroupProfile extends ScrollView {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
 
-        // Создаем ImageView
+        // Создаем ImageView для аватара
         ImageView imageView = new ImageView(context);
         imageView.setId(View.generateViewId());
         imageView.setLayoutParams(new ConstraintLayout.LayoutParams(Functions.dpToPx(150, context), Functions.dpToPx(150, context)));
@@ -69,7 +68,7 @@ public class GroupProfile extends ScrollView {
                 .into(imageView);
         constraintLayout.addView(imageView);
 
-        // Создаем TextView для заголовка
+        // Создаем TextView для названия группы
         TextView titleTextView = new TextView(context);
         titleTextView.setId(View.generateViewId());
         titleTextView.setText(nameGroup);
@@ -81,7 +80,7 @@ public class GroupProfile extends ScrollView {
         // Создаем TextView для слогана
         TextView sloganTextView = new TextView(context);
         sloganTextView.setId(View.generateViewId());
-        sloganTextView.setText("Слоган: "+slogan);
+        sloganTextView.setText(String.format(context.getString(R.string.group_slogan), slogan)); // Используем строку из ресурсов
         sloganTextView.setTextColor(ContextCompat.getColor(context, R.color.white));
         sloganTextView.setTextSize(18);
         constraintLayout.addView(sloganTextView);
@@ -89,7 +88,7 @@ public class GroupProfile extends ScrollView {
         // Создаем TextView для "Коинов"
         TextView coinsTextView = new TextView(context);
         coinsTextView.setId(View.generateViewId());
-        coinsTextView.setText("Коинов: "+coins);
+        coinsTextView.setText(String.format(context.getString(R.string.group_coins), coins)); // Используем строку из ресурсов
         coinsTextView.setTextColor(ContextCompat.getColor(context, R.color.white));
         coinsTextView.setTextSize(18);
         constraintLayout.addView(coinsTextView);
@@ -97,52 +96,51 @@ public class GroupProfile extends ScrollView {
         // Создаем TextView для "Руководитель"
         TextView leaderTextView = new TextView(context);
         leaderTextView.setId(View.generateViewId());
-        leaderTextView.setText("Руководитель");
+        leaderTextView.setText(context.getString(R.string.group_leader_title)); // Используем строку из ресурсов
         leaderTextView.setTextColor(ContextCompat.getColor(context, R.color.white));
         leaderTextView.setTextSize(24);
         if (group.getLeader() != null) constraintLayout.addView(leaderTextView);
 
-        // Создаем LinearLayout
+        // Создаем LinearLayout для руководителя
         LinearLayout linearLayout1 = new LinearLayout(context);
         linearLayout1.setOrientation(LinearLayout.VERTICAL);
         linearLayout1.setId(View.generateViewId());
         linearLayout1.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        linearLayout1.addView(new UserCard(context, group.getLeader(),false));
+        linearLayout1.addView(new UserCard(context, group.getLeader(), false));
         if (group.getLeader() != null) constraintLayout.addView(linearLayout1);
 
         // Создаем TextView для "Староста"
         TextView monitorTextView = new TextView(context);
         monitorTextView.setId(View.generateViewId());
-        monitorTextView.setText("Староста");
+        monitorTextView.setText(context.getString(R.string.group_monitor_title)); // Используем строку из ресурсов
         monitorTextView.setTextSize(24);
         monitorTextView.setTextColor(ContextCompat.getColor(context, R.color.white));
         if (group.getHeadman() != null) constraintLayout.addView(monitorTextView);
 
-        // Создаем второй LinearLayout
+        // Создаем второй LinearLayout для старосты
         LinearLayout linearLayout2 = new LinearLayout(context);
         linearLayout2.setOrientation(LinearLayout.VERTICAL);
         linearLayout2.setId(View.generateViewId());
         linearLayout2.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        linearLayout2.addView(new UserCard(context, group.getHeadman(),false));
+        linearLayout2.addView(new UserCard(context, group.getHeadman(), false));
         if (group.getHeadman() != null) constraintLayout.addView(linearLayout2);
 
         // Создаем TextView для "Ученики"
         TextView studentsTextView = new TextView(context);
         studentsTextView.setId(View.generateViewId());
-        studentsTextView.setText("Ученики");
+        studentsTextView.setText(context.getString(R.string.group_students_title)); // Используем строку из ресурсов
         studentsTextView.setTextSize(24);
         studentsTextView.setTextColor(ContextCompat.getColor(context, R.color.white));
         constraintLayout.addView(studentsTextView);
 
-
-        // Создаем LinearLayout внутри ScrollView
+        // Создаем LinearLayout внутри ScrollView для учеников
         LinearLayout scrollLinearLayout = new LinearLayout(context);
         scrollLinearLayout.setOrientation(LinearLayout.VERTICAL);
         scrollLinearLayout.setId(View.generateViewId());
         scrollLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        group.getUsers().forEach(object -> scrollLinearLayout.addView(new UserCard(context, object,false)));
+        group.getUsers().forEach(object -> scrollLinearLayout.addView(new UserCard(context, object, false)));
         constraintLayout.addView(scrollLinearLayout);
 
         // Устанавливаем ограничения с помощью ConstraintSet
@@ -184,7 +182,7 @@ public class GroupProfile extends ScrollView {
         constraintSet.connect(linearLayout2.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 0);
 
         // Устанавливаем ограничения для "Ученики"
-        constraintSet.connect(studentsTextView.getId(), ConstraintSet.TOP, group.getHeadman() != null? linearLayout2.getId(): linearLayout1.getId(), ConstraintSet.BOTTOM, 12);
+        constraintSet.connect(studentsTextView.getId(), ConstraintSet.TOP, group.getHeadman() != null ? linearLayout2.getId() : linearLayout1.getId(), ConstraintSet.BOTTOM, 12);
         constraintSet.connect(studentsTextView.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, 16);
 
         // Устанавливаем ограничения для ScrollView

@@ -8,7 +8,7 @@
             android:layout_width="255dp"
             android:layout_height="48dp"
             android:inputType="text"
-            android:hint="Логин"
+            android:hint="@string/regLogin"
             android:ems="10"
             android:textColorHint="#aab0bb"
             android:paddingStart="10dp"
@@ -25,7 +25,7 @@
             android:fontFamily="@font/inter"
             android:layout_width="255dp"
             android:layout_height="48dp"
-            android:hint="Пароль"
+            android:hint="@string/regPassword"
             android:textColorHint="#aab0bb"
             android:paddingStart="10dp"
             android:inputType="textPassword"
@@ -37,7 +37,7 @@
             app:layout_constraintStart_toStartOf="parent"
     />
     <ru.helpfront.base.components.ui.Button
-            android:text="Войти"
+            android:text="@string/enter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/logButton"
             app:layout_constraintTop_toBottomOf="@+id/logPassword" app:layout_constraintEnd_toEndOf="parent"

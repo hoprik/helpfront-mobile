@@ -1,5 +1,9 @@
 package ru.helpfront.base.types;
 
+import ru.helpfront.base.MainActivity;
+import ru.helpfront.base.R;
+import ru.helpfront.base.functions.Functions;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -19,10 +23,10 @@ public class Const {
     public static final Map<Roles, String> ROLE_RUS = new HashMap<>();
 
     static {
-        ROLE_RUS.put(Roles.ADMIN, "администратор");
-        ROLE_RUS.put(Roles.GUEST, "гость");
-        ROLE_RUS.put(Roles.STUDENT, "ученик");
-        ROLE_RUS.put(Roles.TEACHER, "учитель");
+        ROLE_RUS.put(Roles.ADMIN, Functions.getText(R.string.admin));
+        ROLE_RUS.put(Roles.GUEST, Functions.getText(R.string.guest));
+        ROLE_RUS.put(Roles.STUDENT, Functions.getText(R.string.student));
+        ROLE_RUS.put(Roles.TEACHER, Functions.getText(R.string.teacher));
     }
     public enum Roles {
         GUEST,

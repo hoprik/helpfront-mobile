@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import ru.helpfront.base.R;
 import ru.helpfront.base.functions.Functions;
 import ru.helpfront.base.pages.EntryPage;
+import ru.helpfront.base.pages.profile.Gpt;
 import ru.helpfront.base.pages.profile.Home;
 import ru.helpfront.base.pages.profile.School;
 
@@ -51,6 +52,7 @@ public class Navbar extends LinearLayout {
         // Добавление элементов в LinearLayout
         this.addView(addNewButton(context, R.drawable.home, R.layout.home, "home"));
         this.addView(addNewButton(context, R.drawable.school,  R.layout.school, "school"));
+        this.addView(addNewButton(context, R.drawable.ai,  R.layout.gpt, "gpt"));
         this.addView(addNewButton(context, R.drawable.exit,  R.layout.entry, "exit"));
 
         buttons.get("home").setColorFilter(ContextCompat.getColor(activity, R.color.green), PorterDuff.Mode.SRC_IN);
@@ -87,6 +89,9 @@ public class Navbar extends LinearLayout {
             }
             if (R.layout.school == layoutChange){
                 new School(activity, R.id.view3);
+            }
+            if (R.layout.gpt == layoutChange){
+                new Gpt(activity, R.id.view3);
             }
             if (R.layout.entry == layoutChange){
                 SharedPreferences sharedPreferences = activity.getSharedPreferences("helpfrontData", Context.MODE_PRIVATE);

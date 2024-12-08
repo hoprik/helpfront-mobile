@@ -1,5 +1,8 @@
 package ru.helpfront.base.types;
 
+import android.graphics.Color;
+import android.text.TextPaint;
+import io.noties.markwon.core.MarkwonTheme;
 import ru.helpfront.base.MainActivity;
 import ru.helpfront.base.R;
 import ru.helpfront.base.functions.Functions;

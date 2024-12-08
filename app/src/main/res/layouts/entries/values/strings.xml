@@ -21,6 +21,10 @@
     <string name="teacher">Учитель</string>
     <string name="greating">Привет</string>
 
+    <string name="send">Отправить</string>
+    <string name="gptHint">Привет, напиши код...</string>
+    <string name="gpt">GPT</string>
+
 
     <string name="group_slogan">Слоган: %1$s</string>
     <string name="group_participants">Участники: %1$d</string>
